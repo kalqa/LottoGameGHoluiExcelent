@@ -3,10 +3,11 @@ package pl.lotto.numberreceiver;
 public class NumberReceiverConfiguration {
 
     public NumberReceiverFacade buildModuleForClient() {
-        return new NumberReceiverFacade();
+        NumberValidator numberValidator = new NumberValidator();
+        return new NumberReceiverFacade(numberValidator);
     }
 
     public NumberReceiverFacade buildModuleForTests() {
-        return new NumberReceiverFacade();
+        return buildModuleForClient();
     }
 }
