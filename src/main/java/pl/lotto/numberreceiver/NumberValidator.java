@@ -1,10 +1,8 @@
 package pl.lotto.numberreceiver;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-
 import static pl.lotto.numberreceiver.NumberValidatorMessage.EVERYTHING_IS_FINE;
 import static pl.lotto.numberreceiver.NumberValidatorMessage.MUST_GIVE_NONE_REPEATABLE_NUMBERS;
 import static pl.lotto.numberreceiver.NumberValidatorMessage.MUST_GIVE_SIX_NUMBERS;
@@ -34,6 +32,9 @@ class NumberValidator {
         return result;
     }
 
+    public boolean areNumbersAfterValidationAcceptable(Optional<NumberValidatorMessage> validatorMessage) {
+        return validatorMessage.filter(EVERYTHING_IS_FINE::equals).isPresent();
+    }
 
     private boolean areExactlySixNumbers(List<Integer> numbersFromUser) {
         return numbersFromUser.size() != MAX_NUMBERS_FROM_USER;

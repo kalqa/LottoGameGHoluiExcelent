@@ -3,10 +3,10 @@ package pl.lotto.numberreceiver;
 import java.util.Optional;
 import java.util.Set;
 
-class TicketRepositoryImpl implements TicketRepository {
+class TicketRepositoryTestImpl implements TicketRepository {
     Set<Ticket> tickets;
 
-    public TicketRepositoryImpl(Set<Ticket> tickets) {
+    public TicketRepositoryTestImpl(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
 

@@ -4,13 +4,12 @@ import java.util.LinkedHashSet;
 
 public class NumberReceiverConfiguration {
 
-    public NumberReceiverFacade buildModuleForClient() {
+    public NumberReceiverFacade buildModuleForClient(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
         NumberValidator numberValidator = new NumberValidator();
-        TicketRepository ticketRepositoryImpl = new TicketRepositoryImpl(new LinkedHashSet<>());
-        return new NumberReceiverFacade(numberValidator, ticketRepositoryImpl);
+        return new NumberReceiverFacade(numberValidator, ticketGenerator);
     }
 
-    public NumberReceiverFacade buildModuleForTests() {
-        return buildModuleForClient();
+    public NumberReceiverFacade buildModuleForTests(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
+        return buildModuleForClient(ticketGenerator, ticketRepository);
     }
 }
