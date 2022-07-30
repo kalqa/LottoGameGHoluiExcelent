@@ -1,7 +1,10 @@
 package pl.lotto.numberreceiver;
 
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
+@AllArgsConstructor
 class TicketAbcd {
 
     TicketGenerable ticketGenerator;

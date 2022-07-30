@@ -10,6 +10,10 @@ import java.util.UUID;
 
 class TicketGenerator implements TicketGenerable {
 
+    private static LocalDate calcNextSunday(LocalDate currentDay) {
+        return currentDay.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+    }
+
     @Override
     public Ticket generateUserTicket(List<Integer> numbersFromUser) {
         String hash = UUID.randomUUID().toString();
@@ -20,9 +24,5 @@ class TicketGenerator implements TicketGenerable {
                 .hash(hash)
                 .dateAndTimeNextDraw(theNextSunday)
                 .build();
-    }
-
-    private static LocalDate calcNextSunday(LocalDate currentDay) {
-        return currentDay.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
     }
 }

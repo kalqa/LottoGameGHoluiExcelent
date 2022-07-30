@@ -1,8 +1,10 @@
 package pl.lotto.numberreceiver;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+
 import static pl.lotto.numberreceiver.NumberValidatorMessage.EVERYTHING_IS_FINE;
 import static pl.lotto.numberreceiver.NumberValidatorMessage.MUST_GIVE_NONE_REPEATABLE_NUMBERS;
 import static pl.lotto.numberreceiver.NumberValidatorMessage.MUST_GIVE_SIX_NUMBERS;
@@ -13,27 +15,36 @@ class NumberValidator {
     public static final int MAX_NUMBERS_FROM_USER = 6;
     public static final int MIN_GIVEN_NUMBER = 1;
     public static final int MAX_GIVEN_NUMBER = 99;
+    public static final int FIRST_INDEX_IN_LIST = 0;
 
-    //    List<NumberValidatorMessage> validatorMessages = new ArrayList<>();
-    Optional<NumberValidatorMessage> validate(List<Integer> numbersFromUser) {
-        Optional<NumberValidatorMessage> result;
-        if (areExactlySixNumbers(numbersFromUser)) {
-//            validatorMessages.add(MUST_GIVE_SIX_NUMBERS);
-            result = Optional.of(MUST_GIVE_SIX_NUMBERS);
-        } else if (areAllNumbersInRange(numbersFromUser)) {
-//            validatorMessages.add(NUMBER_OUT_OF_RANGE);
-            result = Optional.of(NUMBER_OUT_OF_RANGE);
-        } else if (areAllNumbersNotRepeatable(numbersFromUser)) {
-//            validatorMessages.add(MUST_GIVE_NONE_REPEATABLE_NUMBERS);
-            result = Optional.of(MUST_GIVE_NONE_REPEATABLE_NUMBERS);
+    List<NumberValidatorMessage> validate(List<Integer> numbersFromUser) {
+        List<NumberValidatorMessage> validatorMessages = new ArrayList<>();
+        List<NumberValidatorMessage> numberValidatorMessages = messagesAdder(numbersFromUser);
+        if (numberValidatorMessages.isEmpty()) {
+            validatorMessages.add(EVERYTHING_IS_FINE);
         } else {
-            result = Optional.of(EVERYTHING_IS_FINE);
+            validatorMessages.addAll(numberValidatorMessages);
+        }
+        return validatorMessages;
+    }
+
+    private List<NumberValidatorMessage> messagesAdder(List<Integer> numbersFromUser) {
+        List<NumberValidatorMessage> result = new ArrayList<>();
+        if (areExactlySixNumbers(numbersFromUser)) {
+            result.add(MUST_GIVE_SIX_NUMBERS);
+        }
+        if (areAllNumbersInRange(numbersFromUser)) {
+            result.add(NUMBER_OUT_OF_RANGE);
+        }
+        if (areAllNumbersNotRepeatable(numbersFromUser)) {
+            result.add(MUST_GIVE_NONE_REPEATABLE_NUMBERS);
         }
         return result;
     }
 
-    public boolean areNumbersAfterValidationAcceptable(Optional<NumberValidatorMessage> validatorMessage) {
-        return validatorMessage.filter(EVERYTHING_IS_FINE::equals).isPresent();
+    public boolean areNumbersAfterValidationAcceptable(List<NumberValidatorMessage> validatorMessage) {
+        return validatorMessage.size() == MIN_GIVEN_NUMBER &&
+                EVERYTHING_IS_FINE.equals(validatorMessage.get(FIRST_INDEX_IN_LIST));
     }
 
     private boolean areExactlySixNumbers(List<Integer> numbersFromUser) {
@@ -46,6 +57,7 @@ class NumberValidator {
     }
 
     private boolean areAllNumbersNotRepeatable(List<Integer> numbersFromUser) {
-        return new HashSet<>(numbersFromUser).size() < MAX_NUMBERS_FROM_USER;
+        Set<Integer> set = new LinkedHashSet<>(numbersFromUser);
+        return numbersFromUser.size() != set.size();
     }
 }

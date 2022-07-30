@@ -3,9 +3,11 @@ package pl.lotto.numberreceiver;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
-public class NumberReceiverResultMapper {
+import java.util.List;
 
-    static NumberReceiverResultDto mapToDto(String message, Ticket ticket) {
+class NumberReceiverResultMapper {
+
+    static NumberReceiverResultDto mapToDto(List<String> message, Ticket ticket) {
         return new NumberReceiverResultDto(
                 message,
                 new TicketDto(ticket.getHash(), ticket.userNumbers, ticket.dateAndTimeNextDraw)

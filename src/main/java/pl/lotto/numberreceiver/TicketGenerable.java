@@ -2,7 +2,7 @@ package pl.lotto.numberreceiver;
 
 import java.util.List;
 
-public interface TicketGenerable {
+interface TicketGenerable {
 
     Ticket generateUserTicket(List<Integer> numbersFromUser);
 }

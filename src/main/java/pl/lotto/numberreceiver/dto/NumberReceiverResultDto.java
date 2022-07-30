@@ -1,5 +1,7 @@
 package pl.lotto.numberreceiver.dto;
 
-public record NumberReceiverResultDto(String message, TicketDto ticket) {
+import java.util.List;
+
+public record NumberReceiverResultDto(List<String> message, TicketDto ticket) {
 
 }

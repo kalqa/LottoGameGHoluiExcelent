@@ -2,9 +2,10 @@ package pl.lotto.numberreceiver;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import pl.lotto.numberreceiver.dto.TicketDto;
 
-public interface SampleTicket {
+interface SampleTicket {
 
     default TicketDto sampleTicket(List<Integer> expectedUserNumbers, String expectedHash, LocalDateTime expectedDrawDate) {
         return new TicketDto(

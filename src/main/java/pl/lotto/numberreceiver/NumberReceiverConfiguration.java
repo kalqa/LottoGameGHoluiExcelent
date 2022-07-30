@@ -1,12 +1,12 @@
 package pl.lotto.numberreceiver;
 
-import java.util.LinkedHashSet;
-
 public class NumberReceiverConfiguration {
 
     public NumberReceiverFacade buildModuleForClient(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
         NumberValidator numberValidator = new NumberValidator();
-        return new NumberReceiverFacade(numberValidator, ticketGenerator);
+        NumberValidatorMessageConverter numberValidatorMessageConverter = new NumberValidatorMessageConverter();
+        TicketAbcd ticketAbcd = new TicketAbcd(ticketGenerator, ticketRepository);
+        return new NumberReceiverFacade(numberValidator, numberValidatorMessageConverter, ticketAbcd);
     }
 
     public NumberReceiverFacade buildModuleForTests(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {

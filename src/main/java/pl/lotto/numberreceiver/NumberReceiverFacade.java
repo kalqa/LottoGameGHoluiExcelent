@@ -1,35 +1,27 @@
 package pl.lotto.numberreceiver;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-import static pl.lotto.numberreceiver.NumberValidatorMessage.EVERYTHING_IS_FINE;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
 
     NumberValidator numberValidator;
+    NumberValidatorMessageConverter numberValidatorMessageConverter;
     TicketAbcd ticketAbcd;
 
     public NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
-        Optional<NumberValidatorMessage> validatorMessage = numberValidator.validate(numbersFromUser);
-        if (numberValidator.areNumbersAfterValidationAcceptable(validatorMessage)) {
+        List<NumberValidatorMessage> enumValidatorMessage = numberValidator.validate(numbersFromUser);
+        List<String> validatorMessage = numberValidatorMessageConverter.convertNumberValidatorMessageToString(enumValidatorMessage);
+        if (numberValidator.areNumbersAfterValidationAcceptable(enumValidatorMessage)) {
             Ticket ticket = ticketAbcd.generateTicket(numbersFromUser);
-//            getUserTicket(uniqueUserTicket);
-
-            return NumberReceiverResultMapper.mapToDto(validatorMessage.get().message, ticket);
-//            return new NumberReceiverResultDto(validatorMessage.get().message, uniqueUserTicket);
+            return NumberReceiverResultMapper.mapToDto(validatorMessage, ticket);
         }
-        return new NumberReceiverResultDto(validatorMessage.get().message, null);
+        return new NumberReceiverResultDto(validatorMessage, null);
     }
-
-//    public Ticket getUserTicket(Ticket userTicket) {
-//        return userTicket;
-//    }
-
-
 
     public void userNumbersForGivenDate(LocalDateTime date) {
         // returns all numbers for given date
