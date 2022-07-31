@@ -15,11 +15,20 @@ interface SampleTicket {
         );
     }
 
-    default TicketDto sampleTicketWithTestHash(List<Integer> expectedUserNumbers, LocalDateTime expectedDrawDate) {
+    default TicketDto sampleTicketDtoWithTestHash(List<Integer> expectedUserNumbers, LocalDateTime expectedDrawDate) {
         return new TicketDto(
                 "testHash",
                 expectedUserNumbers,
                 expectedDrawDate
         );
     }
+
+    default Ticket sampleTicketWithTestHash(List<Integer> expectedUserNumbers, LocalDateTime expectedDrawDate) {
+        return new Ticket(
+                "testHash",
+                expectedUserNumbers,
+                expectedDrawDate
+        );
+    }
+
 }

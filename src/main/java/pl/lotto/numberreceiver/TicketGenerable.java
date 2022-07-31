@@ -5,4 +5,5 @@ import java.util.List;
 interface TicketGenerable {
 
     Ticket generateUserTicket(List<Integer> numbersFromUser);
+
 }

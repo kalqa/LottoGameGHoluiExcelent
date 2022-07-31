@@ -20,7 +20,6 @@ class TicketGeneratorTestImpl implements TicketGenerable {
         );
     }
 
-//    public saveForTests(){
-//        numbersFromUser.add()
-//    }
+
+
 }

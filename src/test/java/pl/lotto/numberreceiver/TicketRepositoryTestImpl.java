@@ -1,24 +1,37 @@
 package pl.lotto.numberreceiver;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 class TicketRepositoryTestImpl implements TicketRepository {
-    Set<Ticket> tickets;
+    Map<LocalDateTime, Ticket> tickets;
 
-    public TicketRepositoryTestImpl(Set<Ticket> tickets) {
+    public TicketRepositoryTestImpl(Map<LocalDateTime, Ticket> tickets) {
         this.tickets = tickets;
     }
 
-    public void saveTicket(Ticket ticket) {
-        tickets.add(ticket);
+    public TicketRepositoryTestImpl() {
+
     }
 
+    @Override
+    public void saveTicket(Ticket ticket, LocalDateTime currentDateAndTime) {
+        tickets.put(currentDateAndTime, ticket);
+    }
+
+    @Override
+    public Map<LocalDateTime, Ticket> getAllTickets() {
+        return tickets;
+    }
+
+
     public Optional<Ticket> findTicketByHash(String currentTicketHash) {
-        return tickets
-                .stream()
-                .filter(ticket -> currentTicketHash.equals(ticket.getHash()))
-                .findFirst();
+        return null;
+        //        return tickets
+//                .stream()
+//                .filter(ticket -> currentTicketHash.equals(ticket.getHash()))
+//                .findFirst();
     }
 
 
