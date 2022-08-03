@@ -14,11 +14,11 @@ class TicketStorage {
 
     public Ticket generateTicket(List<Integer> numbersFromUser) {
         Ticket uniqueUserTicket = ticketGenerator.generateUserTicket(numbersFromUser);
-        ticketRepository.saveTicket(uniqueUserTicket, LocalDateTime.now());
+        ticketRepository.saveTicket(uniqueUserTicket);
         return uniqueUserTicket;
     }
 
-    public List<Ticket> getTicketsFromDate(LocalDate dateToGet) {
+    public List<Ticket> getTicketsFromDate(LocalDateTime dateToGet) {
         return ticketRepository.getTicketsForGivenDate(dateToGet);
     }
 

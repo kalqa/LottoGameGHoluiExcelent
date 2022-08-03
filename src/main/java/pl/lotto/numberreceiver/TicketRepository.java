@@ -8,11 +8,11 @@ import java.util.Optional;
 
 interface TicketRepository {
 
-    void saveTicket(Ticket ticket, LocalDateTime currentDateAndTime);
+    void saveTicket(Ticket ticket);
 
-    Map<LocalDateTime, Ticket> getAllTickets();
+    Map<String, Ticket> getAllTickets();
 
-    List<Ticket> getTicketsForGivenDate(LocalDate dateToGet);
+    List<Ticket> getTicketsForGivenDate(LocalDateTime dateToGet);
 
     Optional<Ticket> findTicketByHash(String currentTicketHash);
 

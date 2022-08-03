@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 class TicketRepositoryTestImpl implements TicketRepository {
-    Map<LocalDateTime, Ticket> tickets;
+    Map<String, Ticket> tickets;
 
-    public TicketRepositoryTestImpl(Map<LocalDateTime, Ticket> tickets) {
+    public TicketRepositoryTestImpl(Map<String, Ticket> tickets) {
         this.tickets = tickets;
     }
 
@@ -19,21 +19,21 @@ class TicketRepositoryTestImpl implements TicketRepository {
     }
 
     @Override
-    public void saveTicket(Ticket ticket, LocalDateTime currentDateAndTime) {
-        tickets.put(currentDateAndTime, ticket);
+    public void saveTicket(Ticket ticket) {
+        tickets.put(ticket.hash, ticket);
     }
 
     @Override
-    public Map<LocalDateTime, Ticket> getAllTickets() {
+    public Map<String, Ticket> getAllTickets() {
         return tickets;
     }
 
     @Override
-    public List<Ticket> getTicketsForGivenDate(LocalDate dateToGet) {
+    public List<Ticket> getTicketsForGivenDate(LocalDateTime drawDate) {
         return getAllTickets()
                 .entrySet()
                 .stream()
-                .filter(currentElement -> currentElement.getKey().toLocalDate().equals(dateToGet))
+                .filter(currentElement -> currentElement.getValue().dateAndTimeNextDraw.equals(drawDate))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toCollection(ArrayList::new));
     }

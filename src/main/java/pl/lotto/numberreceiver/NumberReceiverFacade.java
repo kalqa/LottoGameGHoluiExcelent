@@ -1,10 +1,9 @@
 package pl.lotto.numberreceiver;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
@@ -24,7 +23,7 @@ public class NumberReceiverFacade {
         return new NumberReceiverResultDto(validatorMessage, null);
     }
 
-    public List<Ticket> userNumbersForGivenDate(LocalDate date) {
+    public List<Ticket> userNumbersForGivenDate(LocalDateTime date) {
         // returns all numbers for given date
         return ticketStorage.getTicketsFromDate(date);
     }
