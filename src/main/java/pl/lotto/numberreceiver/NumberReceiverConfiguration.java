@@ -5,8 +5,8 @@ public class NumberReceiverConfiguration {
     public NumberReceiverFacade buildModuleForClient(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
         NumberValidator numberValidator = new NumberValidator();
         NumberValidatorMessageConverter numberValidatorMessageConverter = new NumberValidatorMessageConverter();
-        TicketAbcd ticketAbcd = new TicketAbcd(ticketGenerator, ticketRepository);
-        return new NumberReceiverFacade(numberValidator, numberValidatorMessageConverter, ticketAbcd);
+        TicketStorage ticketStorage = new TicketStorage(ticketGenerator, ticketRepository);
+        return new NumberReceiverFacade(numberValidator, numberValidatorMessageConverter, ticketStorage);
     }
 
     public NumberReceiverFacade buildModuleForTests(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {

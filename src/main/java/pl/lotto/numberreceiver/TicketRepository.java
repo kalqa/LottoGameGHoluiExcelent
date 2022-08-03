@@ -12,6 +12,8 @@ interface TicketRepository {
 
     Map<LocalDateTime, Ticket> getAllTickets();
 
+    List<Ticket> getTicketsForGivenDate(LocalDate dateToGet);
+
     Optional<Ticket> findTicketByHash(String currentTicketHash);
 
 //    void saveForTests(Map<LocalDateTime, List<Ticket>> tickets);

@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
-class TicketAbcd {
+class TicketStorage {
 
     TicketGenerable ticketGenerator;
     TicketRepository ticketRepository;
@@ -22,13 +19,7 @@ class TicketAbcd {
     }
 
     public List<Ticket> getTicketsFromDate(LocalDate dateToGet) {
-        return ticketRepository
-                .getAllTickets()
-                .entrySet()
-                .stream()
-                .filter(currentElement -> currentElement.getKey().toLocalDate().equals(dateToGet))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toCollection(ArrayList::new));
+        return ticketRepository.getTicketsForGivenDate(dateToGet);
     }
 
 }
