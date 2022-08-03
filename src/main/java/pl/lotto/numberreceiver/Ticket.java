@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Ticket {
+class Ticket {
     String hash;
     List<Integer> userNumbers;
     LocalDateTime dateAndTimeNextDraw;

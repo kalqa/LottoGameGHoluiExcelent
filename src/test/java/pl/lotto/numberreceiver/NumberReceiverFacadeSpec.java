@@ -1,130 +1,223 @@
 package pl.lotto.numberreceiver;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-
+import pl.lotto.numberreceiver.dto.TicketDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NumberReceiverFacadeSpec {
+class NumberReceiverFacadeSpec implements SampleTicket {
 
-    @Test
-    public void should_return_correct_message_when_user_inputted_six_numbers() {
+
+    @ParameterizedTest
+    @DisplayName("should_return_correct_message_when_user_inputted_six_numbers")
+    @MethodSource("createArrayWhereTestsPassed")
+    public void createArrayWhereTestsPassed(List<Integer> numbersFromUser) {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6);
-
+//        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests
+                (ticketGenerator, ticketRepository);
         // when
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
-
         // then
-        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto("correct message");
-        assertThat(actualResult.message()).isEqualTo(expectedResult.message());
+        TicketDto ticketDto = sampleTicketDtoWithTestHash(numbersFromUser, LocalDateTime
+                .of(2022, 7, 10, 12, 0));
+
+        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto(List.of("correct message"), ticketDto);
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
-    @Test
-    @DisplayName("should return failed message when user inputed less than six numbers")
-    public void should_return_failed_message_when_user_inputed_less_than_six_numbers() {
+    @ParameterizedTest
+    @DisplayName("should return failed message when user inputted less than six numbers")
+    @MethodSource("createArrayWhereAreLessNumbersThanShouldBe")
+    public void should_return_failed_message_when_user_inputted_less_than_six_numbers(List<Integer> numbersFromUser) {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5);
+//        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests(ticketGenerator, ticketRepository);
+        //when
+        NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
+        //then
+        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto(List.of("you must give exactly six numbers"), null);
+        assertThat(actualResult).isEqualTo(expectedResult);
 
-        // when
+    }
+
+    @ParameterizedTest
+    @DisplayName("should return failed message when user inputted more than six numbers")
+    @MethodSource("createArrayWhereAreToManyNumbersThanShouldBe")
+    public void should_return_failed_message_when_user_inputed_more_than_six_numbers(List<Integer> numbersFromUser) {
+        // given
+//        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests(ticketGenerator, ticketRepository);
+        //when
+        NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
+        //then
+        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto(List.of("you must give exactly six numbers"), null);
+        assertThat(actualResult).isEqualTo(expectedResult);
+
+    }
+
+    @ParameterizedTest
+    @DisplayName("should return failed message when user inputted number out of range")
+    @MethodSource("createArrayWhereNumbersAreNotInRange")
+    public void should_return_failed_message_when_user_inputted_number_out_of_range(List<Integer> numbersFromUser) {
+        // given
+//        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6000);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
+                .buildModuleForTests(ticketGenerator, ticketRepository);
+        //when
+
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        // then
-        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto("you must give exactly six numbers");
-        assertThat(actualResult.message()).isEqualTo(expectedResult.message());
+        //then
+        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto(List.of("all numbers should be in range 1-99"), null);
+        assertThat(actualResult).isEqualTo(expectedResult);
+
     }
 
-    @Test
-    @DisplayName("should return failed message when user inputed more than six numbers")
-    public void should_return_failed_message_when_user_inputed_more_than_six_numbers() {
+    @ParameterizedTest
+    @DisplayName("should return failed message when user you must give exactly six numbers " +
+            "all numbers should be in range 1-99" +
+            "you must give exactly six not repeatable numbers"
+    )
+    @MethodSource("createArrayWithAllException")
+    public void should_return_failed_message_when_user_inputted_numbers(List<Integer> numbersFromUser) {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
+//        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6000, 6000);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
+                .buildModuleForTests(ticketGenerator, ticketRepository);
+        //when
 
-        // when
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        // then
-        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto("you must give exactly six numbers");
-        assertThat(actualResult.message()).isEqualTo(expectedResult.message());
+        //then
+        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto(
+                List.of("you must give exactly six numbers",
+                        "all numbers should be in range 1-99",
+                        "you must give exactly six not repeatable numbers"), null);
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
-    @Test
-    @DisplayName("should return failed message when user inputed number out of range")
-    public void should_return_failed_message_when_user_inputed_number_out_of_range() {
-        // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 300, 4, 5, 6);
-
-        // when
-        NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
-
-        // then
-        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto("all numbers should be in range 1-99");
-        assertThat(actualResult.message()).isEqualTo(expectedResult.message());
-    }
-
-    @Test
-    @DisplayName("should return failed message when user inputed repeated number out of range")
-    public void should_return_failed_message_when_user_inputed_repeated_number_out_of_range() {
-        // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 50, 50, 6);
-
-        // when
-        NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
-
-        // then
-        NumberReceiverResultDto expectedResult = new NumberReceiverResultDto("you must give exactly six not repeatable numbers");
-        assertThat(actualResult.message()).isEqualTo(expectedResult.message());
-    }
-
-    @Test
-    @DisplayName("should find the ticket by hash in TicketRepository")
-    public void should_find_the_ticket_by_hash() {
-        // given
-        String hash = UUID.randomUUID().toString();
-        Ticket ticket = new Ticket(hash, List.of(1, 2, 3, 4, 5, 6), LocalDateTime.now());
-        // when
-        TicketRepositoryImpl ticketRepositoryImpl = new TicketRepositoryImpl(new LinkedHashSet<>());
-        ticketRepositoryImpl.saveTicket(ticket);
-        // then
-        assertThat(ticketRepositoryImpl.findTicketByHash(hash).get()).isEqualTo(ticket);
-    }
-
+    // wersja spy
 
     @Test
     @DisplayName("should return that ticket has been added when user inputted none repeatedNumbers")
     public void should_return_that_ticket_has_been_added_when_user_inputted_none_repeatedNumbers() {
-        // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests();
-        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6);
-        // when
-        NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
-        // then
 
-        LocalDate theNextSaturday = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
-        LocalDateTime theNextSaturdayDraw = LocalDateTime.of(theNextSaturday, LocalTime.of(12, 0));
-        Ticket ticket = Ticket.builder()
-                .hash(actualResult.ticket().getHash())
-                .userNumbers(numbersFromUser)
-                .dateAndTimeNextDraw(theNextSaturdayDraw)
-                .build();
-        assertThat(actualResult.ticket()).isEqualTo(ticket);
+        // given
+        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6);
+        TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
+//        TicketRepository ticketRepository = mock(TicketRepositoryTestImpl.class);
+        TicketRepository ticketRepository = new TicketRepositoryTestImpl(generateMapForTest(numbersFromUser));
+
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
+                .buildModuleForTests(ticketGenerator, ticketRepository);
+
+
+        Map<String, Ticket> mapForTest = generateMapForTest(numbersFromUser);
+
+//        given(ticketRepository.getAllTickets()).willReturn(mapForTest);
+
+//        when
+        List<Ticket> actual = numberReceiverFacade
+                .userNumbersForGivenDate(LocalDateTime.of(1, 1, 1, 0, 0));
+
+        //then
+        Ticket ticket = new Ticket("testHash",
+                numbersFromUser, LocalDateTime.of(1, 1, 1, 1, 1)
+        );
+        List<Ticket> expected = List.of(ticket);
+        assertThat(actual).isEqualTo(expected);
+    }
+    // wersja typu mock
+
+    private Map<String, Ticket> generateMapForTest(List<Integer> numbersFromUser) {
+        Map<String, Ticket> mapForTest = new ConcurrentHashMap<>();
+        for (int i = 1; i < 10; i++) {
+            LocalDate currentLocalDate = LocalDate.of(i, i, i);
+            LocalTime currentLocalTime = LocalTime.of(i, i);
+            LocalDateTime currentLocalDateTime = LocalDateTime.of(currentLocalDate, currentLocalTime);
+            String testHash = "testHash";
+            Ticket ticket = Ticket.builder()
+                    .hash(testHash)
+                    .userNumbers(numbersFromUser)
+                    .dateAndTimeNextDraw(currentLocalDateTime)
+                    .build();
+            mapForTest.put(testHash, ticket);
+        }
+        return mapForTest;
     }
 
 
+    public static Stream<Arguments> createArrayWhereTestsPassed() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreLessNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreToManyNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6, 70)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60, 70)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65, 70)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67, 70)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68, 70))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereNumbersAreNotInRange() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWithAllException() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800, 6800))
+        );
+    }
 }
