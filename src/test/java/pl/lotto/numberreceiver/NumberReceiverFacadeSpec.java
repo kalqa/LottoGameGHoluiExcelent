@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,10 +17,63 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class NumberReceiverFacadeSpec implements SampleTicket {
 
+
+    public static Stream<Arguments> createArrayWhereTestsPassed() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreLessNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreToManyNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6, 70)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60, 70)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65, 70)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67, 70)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68, 70))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereNumbersAreNotInRange() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWithAllException() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800, 6800))
+        );
+    }
+
+    // wersja spy
 
     @ParameterizedTest
     @DisplayName("should_return_correct_message_when_user_inputted_six_numbers")
@@ -120,8 +174,6 @@ class NumberReceiverFacadeSpec implements SampleTicket {
         assertThat(actualResult).isEqualTo(expectedResult);
     }
 
-    // wersja spy
-
     @Test
     @DisplayName("should return that ticket has been added when user inputted none repeatedNumbers")
     public void should_return_that_ticket_has_been_added_when_user_inputted_none_repeatedNumbers() {
@@ -136,22 +188,21 @@ class NumberReceiverFacadeSpec implements SampleTicket {
                 .buildModuleForTests(ticketGenerator, ticketRepository);
 
 
-        Map<String, Ticket> mapForTest = generateMapForTest(numbersFromUser);
+//        Map<String, Ticket> mapForTest = generateMapForTest(numbersFromUser);
 
 //        given(ticketRepository.getAllTickets()).willReturn(mapForTest);
 
 //        when
         List<Ticket> actual = numberReceiverFacade
-                .userNumbersForGivenDate(LocalDateTime.of(1, 1, 1, 0, 0));
+                .userNumbersForGivenDate(LocalDateTime.of(1, 1, 1, 1, 1));
 
         //then
-        Ticket ticket = new Ticket("testHash",
+        Ticket ticket = new Ticket("testHash1",
                 numbersFromUser, LocalDateTime.of(1, 1, 1, 1, 1)
         );
         List<Ticket> expected = List.of(ticket);
         assertThat(actual).isEqualTo(expected);
     }
-    // wersja typu mock
 
     private Map<String, Ticket> generateMapForTest(List<Integer> numbersFromUser) {
         Map<String, Ticket> mapForTest = new ConcurrentHashMap<>();
@@ -159,7 +210,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
             LocalDate currentLocalDate = LocalDate.of(i, i, i);
             LocalTime currentLocalTime = LocalTime.of(i, i);
             LocalDateTime currentLocalDateTime = LocalDateTime.of(currentLocalDate, currentLocalTime);
-            String testHash = "testHash";
+            String testHash = "testHash" + i;
             Ticket ticket = Ticket.builder()
                     .hash(testHash)
                     .userNumbers(numbersFromUser)
@@ -168,56 +219,5 @@ class NumberReceiverFacadeSpec implements SampleTicket {
             mapForTest.put(testHash, ticket);
         }
         return mapForTest;
-    }
-
-
-    public static Stream<Arguments> createArrayWhereTestsPassed() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereAreLessNumbersThanShouldBe() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereAreToManyNumbersThanShouldBe() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6, 70)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60, 70)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65, 70)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67, 70)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68, 70))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereNumbersAreNotInRange() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWithAllException() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000, 6000)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000, 6000)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500, 6500)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700, 6700)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800, 6800))
-        );
     }
 }

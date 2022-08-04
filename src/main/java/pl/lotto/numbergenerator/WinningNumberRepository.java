@@ -1,9 +1,11 @@
 package pl.lotto.numbergenerator;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public interface WinningNumberRepository {
+interface WinningNumberRepository {
 
+    void save(List<Integer> numbers, LocalDate currentDate);
 
-    void save(List<Integer> numbers);
+    List<Integer> getWinningNumbersForGivenDate(LocalDate dateToGet);
 }

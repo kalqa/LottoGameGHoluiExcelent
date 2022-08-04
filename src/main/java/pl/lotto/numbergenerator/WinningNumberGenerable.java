@@ -2,7 +2,7 @@ package pl.lotto.numbergenerator;
 
 import java.util.List;
 
-public interface WinningNumberGenerable {
+interface WinningNumberGenerable {
 
-    List<Integer> generate();
+    List<Integer> generateWinningNumbers();
 }
