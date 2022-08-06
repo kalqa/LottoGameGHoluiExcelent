@@ -1,6 +1,7 @@
 package pl.lotto.numberreceiver;
 
 import lombok.AllArgsConstructor;
+import pl.lotto.numberreceiver.dto.TicketDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

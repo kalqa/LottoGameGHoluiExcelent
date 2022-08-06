@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.numbergenerator.dto.NumberGeneratorResultDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,7 @@ class NumberGeneratorFacadeSpec {
         NumberGeneratorFacade numberReceiverFacade = numberGeneratorConfiguration
                 .buildModuleForTests(winningNumberGenerable, winningNumberRepository);
 
-        LocalDate dateToSave = LocalDate.of(1, 1, 1);
+        LocalDateTime dateToSave = LocalDateTime.of(1, 1, 1, 1, 1);
         numberReceiverFacade.generateNumbersForDate(dateToSave);
 
         // when
@@ -34,7 +35,6 @@ class NumberGeneratorFacadeSpec {
 
         NumberGeneratorResultDto expectedDto = new NumberGeneratorResultDto(expectedWinningNumbers);
         assertThat(winningNumbers).isEqualTo(expectedDto);
-
     }
 
 }
