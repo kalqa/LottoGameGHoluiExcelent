@@ -1,7 +1,7 @@
 package pl.lotto.resultchecker;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;

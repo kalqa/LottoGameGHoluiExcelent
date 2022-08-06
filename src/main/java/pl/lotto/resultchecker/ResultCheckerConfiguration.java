@@ -1,6 +1,6 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 
 public class ResultCheckerConfiguration {

@@ -8,7 +8,6 @@ class WinnerTicketCheckableTestImpl implements WinnerTicketCheckable {
     @Override
     public List<TicketDto> checkWhichTicketWon() {
 
-
         return null;
     }
 }

@@ -1,7 +1,7 @@
 package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.dto.ResultCheckerDto;
@@ -22,9 +22,7 @@ public class ResultCheckerFacade {
 
     public List<TicketDto> getWinnersTicket(LocalDateTime dateToGetWinnersTicket) {
         List<Integer> winnerNumbers = getWinnerNumbers(dateToGetWinnersTicket);
-//        List<Ticket> tickets = numberReceiverFacade.userNumbersForGivenDate(dateToGetWinnersTicket);
-
-
+        List<TicketDto> tickets = numberReceiverFacade.userNumbersForGivenDate(dateToGetWinnersTicket);
         return winnerTicketCheckable.checkWhichTicketWon();
     }
 

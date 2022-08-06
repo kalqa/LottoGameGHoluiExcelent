@@ -1,6 +1,7 @@
 package pl.lotto.numbergenerator;
 
-import java.time.LocalDate;
+import pl.lotto.numberreceiver.numbergenerator.WinningNumberRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

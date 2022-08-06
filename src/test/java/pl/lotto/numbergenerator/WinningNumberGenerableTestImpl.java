@@ -1,6 +1,7 @@
 package pl.lotto.numbergenerator;
 
-import java.lang.reflect.Array;
+import pl.lotto.numberreceiver.numbergenerator.WinningNumberGenerable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

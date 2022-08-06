@@ -22,59 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NumberReceiverFacadeSpec implements SampleTicket {
 
-
-    public static Stream<Arguments> createArrayWhereTestsPassed() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereAreLessNumbersThanShouldBe() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereAreToManyNumbersThanShouldBe() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6, 70)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60, 70)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65, 70)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67, 70)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68, 70))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWhereNumbersAreNotInRange() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800))
-        );
-    }
-
-    public static Stream<Arguments> createArrayWithAllException() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000, 6000)),
-                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000, 6000)),
-                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500, 6500)),
-                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700, 6700)),
-                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800, 6800))
-        );
-    }
-
-    // wersja spy
-
     @ParameterizedTest
     @DisplayName("should_return_correct_message_when_user_inputted_six_numbers")
     @MethodSource("createArrayWhereTestsPassed")
@@ -193,14 +140,14 @@ class NumberReceiverFacadeSpec implements SampleTicket {
 //        given(ticketRepository.getAllTickets()).willReturn(mapForTest);
 
 //        when
-        List<Ticket> actual = numberReceiverFacade
+        List<TicketDto> actual = numberReceiverFacade
                 .userNumbersForGivenDate(LocalDateTime.of(1, 1, 1, 1, 1));
 
         //then
-        Ticket ticket = new Ticket("testHash1",
+        TicketDto ticket = new TicketDto("testHash1",
                 numbersFromUser, LocalDateTime.of(1, 1, 1, 1, 1)
         );
-        List<Ticket> expected = List.of(ticket);
+        List<TicketDto> expected = List.of(ticket);
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -219,5 +166,54 @@ class NumberReceiverFacadeSpec implements SampleTicket {
             mapForTest.put(testHash, ticket);
         }
         return mapForTest;
+    }
+    public static Stream<Arguments> createArrayWhereTestsPassed() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreLessNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereAreToManyNumbersThanShouldBe() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6, 70)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 60, 70)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 65, 70)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 67, 70)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 68, 70))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWhereNumbersAreNotInRange() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800))
+        );
+    }
+
+    public static Stream<Arguments> createArrayWithAllException() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(1, 2, 3, 4, 5, 6000, 6000)),
+                Arguments.of(Arrays.asList(10, 20, 30, 40, 50, 6000, 6000)),
+                Arguments.of(Arrays.asList(15, 25, 35, 45, 55, 6500, 6500)),
+                Arguments.of(Arrays.asList(17, 27, 37, 47, 57, 6700, 6700)),
+                Arguments.of(Arrays.asList(18, 28, 38, 48, 58, 6800, 6800))
+        );
     }
 }
