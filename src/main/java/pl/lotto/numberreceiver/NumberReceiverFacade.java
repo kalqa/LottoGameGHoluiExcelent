@@ -2,8 +2,10 @@ package pl.lotto.numberreceiver;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
+import pl.lotto.numberreceiver.dto.TicketDto;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
@@ -23,8 +25,8 @@ public class NumberReceiverFacade {
         return new NumberReceiverResultDto(validatorMessage, null);
     }
 
-    public List<Ticket> userNumbersForGivenDate(LocalDateTime date) {
+    public List<TicketDto> userNumbersForGivenDate(LocalDateTime date) {
         // returns all numbers for given date
-        return ticketStorage.getTicketsFromDate(date);
+        return ListTicketDtoMapper.mapListOfTicketToTicketDto(ticketStorage.getTicketsFromDate(date));
     }
 }

@@ -1,7 +1,8 @@
 package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numbergenerator.dto.NumberGeneratorResultDto;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.dto.ResultCheckerDto;
@@ -15,18 +16,18 @@ public class ResultCheckerFacade {
     NumberGeneratorFacade numberGeneratorFacade;
     NumberReceiverFacade numberReceiverFacade;
     WinnerTicketCheckable winnerTicketCheckable;
+    WinnerDataLoader winnerDataLoader;
 
-    public ResultCheckerDto winners() {
-        return new ResultCheckerDto(null);
+
+    public ResultCheckerDto winners(LocalDateTime dateToGetWinnersTicket) {
+        List<TicketDto> winnersTicket = getWinnersTicket(dateToGetWinnersTicket);
+        return new ResultCheckerDto(winnersTicket);
     }
 
-    public List<TicketDto> getWinnersTicket(LocalDateTime dateToGetWinnersTicket) {
-        List<Integer> winnerNumbers = getWinnerNumbers(dateToGetWinnersTicket);
-        List<TicketDto> tickets = numberReceiverFacade.userNumbersForGivenDate(dateToGetWinnersTicket);
-        return winnerTicketCheckable.checkWhichTicketWon();
+    private List<TicketDto> getWinnersTicket(LocalDateTime dateToGetWinnersTicket) {
+        List<Integer> winnerNumbers = winnerDataLoader.getWinnerNumbers(dateToGetWinnersTicket);
+        List<TicketDto> tickets = winnerDataLoader.getTickets(dateToGetWinnersTicket);
+        return winnerTicketCheckable.checkWhichTicketWon(tickets, winnerNumbers);
     }
 
-    private List<Integer> getWinnerNumbers(LocalDateTime dateToGetWinnersTicket) {
-        return numberGeneratorFacade.winningNumbersForDate(dateToGetWinnersTicket).winningNumbers();
-    }
 }

@@ -1,11 +1,7 @@
 package pl.lotto.numbergenerator;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorConfiguration;
-import pl.lotto.numberreceiver.numbergenerator.NumberGeneratorFacade;
-import pl.lotto.numberreceiver.numbergenerator.WinningNumberGenerable;
-import pl.lotto.numberreceiver.numbergenerator.WinningNumberRepository;
-import pl.lotto.numberreceiver.numbergenerator.dto.NumberGeneratorResultDto;
+import pl.lotto.numbergenerator.dto.NumberGeneratorResultDto;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

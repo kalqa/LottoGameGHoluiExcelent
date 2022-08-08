@@ -5,5 +5,5 @@ import pl.lotto.numberreceiver.dto.TicketDto;
 import java.util.List;
 
 interface WinnerTicketCheckable {
-    List<TicketDto> checkWhichTicketWon();
+    List<TicketDto> checkWhichTicketWon(List<TicketDto> tickets, List<Integer> winnerNumbers);
 }
