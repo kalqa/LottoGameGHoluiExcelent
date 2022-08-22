@@ -3,11 +3,10 @@ package pl.lotto.resultchecker;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class WinnerTicketCheckableTestImpl implements WinnerTicketCheckable {
+class WinnerTicketCheckableImpl implements WinnerTicketCheckable {
     @Override
     public List<TicketDto> checkWhichTicketWon(List<TicketDto> tickets, List<Integer> winnerNumbers) {
         return tickets.stream()
