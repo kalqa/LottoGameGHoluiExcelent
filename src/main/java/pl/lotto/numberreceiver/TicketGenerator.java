@@ -22,7 +22,7 @@ class TicketGenerator implements TicketGenerable {
         return Ticket.builder()
                 .userNumbers(numbersFromUser)
                 .hash(hash)
-                .dateAndTimeNextDraw(theNextSunday)
+                .nextDrawDate(theNextSunday)
                 .build();
     }
 }

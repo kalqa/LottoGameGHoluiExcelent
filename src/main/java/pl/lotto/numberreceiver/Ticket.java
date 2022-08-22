@@ -19,5 +19,5 @@ import java.util.List;
 class Ticket {
     String hash;
     List<Integer> userNumbers;
-    LocalDateTime dateAndTimeNextDraw;
+    LocalDateTime nextDrawDate;
 }

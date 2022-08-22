@@ -161,7 +161,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
             Ticket ticket = Ticket.builder()
                     .hash(testHash)
                     .userNumbers(numbersFromUser)
-                    .dateAndTimeNextDraw(currentLocalDateTime)
+                    .nextDrawDate(currentLocalDateTime)
                     .build();
             mapForTest.put(testHash, ticket);
         }

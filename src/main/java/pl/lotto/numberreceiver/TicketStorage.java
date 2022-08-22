@@ -1,9 +1,7 @@
 package pl.lotto.numberreceiver;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.numberreceiver.dto.TicketDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +13,7 @@ class TicketStorage {
 
     public Ticket generateTicket(List<Integer> numbersFromUser) {
         Ticket uniqueUserTicket = ticketGenerator.generateUserTicket(numbersFromUser);
-        ticketRepository.saveTicket(uniqueUserTicket);
+        ticketRepository.save(uniqueUserTicket);
         return uniqueUserTicket;
     }
 

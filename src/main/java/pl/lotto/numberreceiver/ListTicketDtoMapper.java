@@ -12,7 +12,7 @@ class ListTicketDtoMapper {
         return tickets.stream()
                 .map(ticket -> new TicketDto(ticket.getHash(),
                         ticket.getUserNumbers(),
-                        ticket.getDateAndTimeNextDraw()))
+                        ticket.getNextDrawDate()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

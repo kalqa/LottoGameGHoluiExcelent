@@ -10,7 +10,7 @@ class NumberReceiverResultMapper {
     static NumberReceiverResultDto mapToDto(List<String> message, Ticket ticket) {
         return new NumberReceiverResultDto(
                 message,
-                new TicketDto(ticket.getHash(), ticket.userNumbers, ticket.dateAndTimeNextDraw)
+                new TicketDto(ticket.getHash(), ticket.userNumbers, ticket.nextDrawDate)
         );
     }
 

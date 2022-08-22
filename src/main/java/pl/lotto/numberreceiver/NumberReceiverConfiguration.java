@@ -1,7 +1,12 @@
 package pl.lotto.numberreceiver;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class NumberReceiverConfiguration {
 
+    @Bean
     public NumberReceiverFacade buildModuleForClient(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
         NumberValidator numberValidator = new NumberValidator();
         NumberValidatorMessageConverter numberValidatorMessageConverter = new NumberValidatorMessageConverter();
