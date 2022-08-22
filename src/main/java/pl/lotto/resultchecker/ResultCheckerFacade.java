@@ -2,6 +2,7 @@ package pl.lotto.resultchecker;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import pl.lotto.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacade;

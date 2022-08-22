@@ -5,3 +5,4 @@ import java.util.List;
 interface WinningNumberGenerable {
     List<Integer> generateWinningNumbers();
 }
+
