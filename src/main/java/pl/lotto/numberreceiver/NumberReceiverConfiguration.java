@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Configuration;
 public class NumberReceiverConfiguration {
 
     @Bean
-    public NumberReceiverFacade buildModuleForClient(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
+    public NumberReceiverFacade numberReceiverFacade(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
         NumberValidator numberValidator = new NumberValidator();
         NumberValidatorMessageConverter numberValidatorMessageConverter = new NumberValidatorMessageConverter();
         TicketStorage ticketStorage = new TicketStorage(ticketGenerator, ticketRepository);
         return new NumberReceiverFacade(numberValidator, numberValidatorMessageConverter, ticketStorage);
     }
 
-    public NumberReceiverFacade buildModuleForTests(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
-        return buildModuleForClient(ticketGenerator, ticketRepository);
+    public NumberReceiverFacade numberReceiverFacadeTest(TicketGenerable ticketGenerator, TicketRepository ticketRepository) {
+        return numberReceiverFacade(ticketGenerator, ticketRepository);
     }
 }

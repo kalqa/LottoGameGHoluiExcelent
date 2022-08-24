@@ -7,7 +7,9 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
+@Component
 class TicketGenerator implements TicketGenerable {
 
     private static LocalDate calcNextSunday(LocalDate currentDay) {

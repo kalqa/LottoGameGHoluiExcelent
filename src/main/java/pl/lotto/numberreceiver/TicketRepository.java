@@ -4,21 +4,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TicketRepository {
-    // here was that TicketRepository extends MongoRepository<Ticket, String>
+public interface TicketRepository extends MongoRepository<Ticket, String> {
 
-    void save(Ticket ticket);
+//    Ticket save(Ticket ticket);
 
-    Map<String, Ticket> getAllTickets();
+//    Map<String, Ticket> getAllTickets();
 
     List<Ticket> findAllByNextDrawDate(LocalDateTime nextDrawDate);
 
-    List<Ticket> getTicketsForGivenDate(LocalDateTime dateToGet);
+//    List<Ticket> findAllByNextDrawDateAndHashOrderByNextDrawDateDesc(LocalDateTime nextDrawDate, String hash);
+//
+//    List<Ticket> getTicketsForGivenDate(LocalDateTime dateToGet);
 
     Optional<Ticket> findTicketByHash(String currentTicketHash);
 

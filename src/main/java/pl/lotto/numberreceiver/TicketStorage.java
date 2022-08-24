@@ -18,7 +18,7 @@ class TicketStorage {
     }
 
     public List<Ticket> getTicketsFromDate(LocalDateTime dateToGet) {
-        return ticketRepository.getTicketsForGivenDate(dateToGet);
+        return ticketRepository.findAllByNextDrawDate(dateToGet);
     }
 
 }

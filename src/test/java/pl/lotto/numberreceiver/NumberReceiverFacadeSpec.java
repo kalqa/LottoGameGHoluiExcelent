@@ -30,7 +30,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
 //        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6);
         TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().numberReceiverFacadeTest
                 (ticketGenerator, ticketRepository);
         // when
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -50,7 +50,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
 //        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5);
         TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests(ticketGenerator, ticketRepository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().numberReceiverFacadeTest(ticketGenerator, ticketRepository);
         //when
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
@@ -67,7 +67,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
 //        List<Integer> numbersFromUser = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
         TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().buildModuleForTests(ticketGenerator, ticketRepository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().numberReceiverFacadeTest(ticketGenerator, ticketRepository);
         //when
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
@@ -85,7 +85,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
         TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
-                .buildModuleForTests(ticketGenerator, ticketRepository);
+                .numberReceiverFacadeTest(ticketGenerator, ticketRepository);
         //when
 
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -108,7 +108,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
         TicketGenerable ticketGenerator = new TicketGeneratorTestImpl(numbersFromUser);
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(new HashMap<>());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
-                .buildModuleForTests(ticketGenerator, ticketRepository);
+                .numberReceiverFacadeTest(ticketGenerator, ticketRepository);
         //when
 
         NumberReceiverResultDto actualResult = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -132,7 +132,7 @@ class NumberReceiverFacadeSpec implements SampleTicket {
         TicketRepository ticketRepository = new TicketRepositoryTestImpl(generateMapForTest(numbersFromUser));
 
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
-                .buildModuleForTests(ticketGenerator, ticketRepository);
+                .numberReceiverFacadeTest(ticketGenerator, ticketRepository);
 
 
 //        Map<String, Ticket> mapForTest = generateMapForTest(numbersFromUser);
