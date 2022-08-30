@@ -1,12 +1,20 @@
 package pl.lotto.numbergenerator;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface WinningNumberRepository {
+@Repository
+public interface WinningNumberRepository extends MongoRepository<WinnerNumbers, LocalDateTime> {
 
-    void save(List<Integer> numbers, LocalDateTime currentDate);
+//    void save(List<Integer> numbers, LocalDateTime currentDate);
 
-    List<Integer> getWinningNumbersForGivenDate(LocalDateTime dateToGet);
+    WinnerNumbers save(WinnerNumbers winnerNumbers);
+
+    List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet);
+
+
 
 }

@@ -14,11 +14,12 @@ public class NumberGeneratorFacade {
 
     public void generateNumbersForDate(LocalDateTime currentDate) {
         List<Integer> generated = winningNumberGenerator.generateWinningNumbers();
-        repository.save(generated, currentDate);
+        WinnerNumbers winnerNumbers = new WinnerNumbers(generated, currentDate);
+        repository.save(winnerNumbers);
     }
 
     public NumberGeneratorResultDto winningNumbersForDate(LocalDateTime date) {
-        List<Integer> winningNumbers = repository.getWinningNumbersForGivenDate(date);
+        List<Integer> winningNumbers = repository.getWinnerNumbersByDateOfWinnerNumbers(date);
         return new NumberGeneratorResultDto(winningNumbers);
     }
 }

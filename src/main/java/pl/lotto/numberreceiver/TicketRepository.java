@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TicketRepository extends MongoRepository<Ticket, String> {
 
-//    Ticket save(Ticket ticket);
+    Ticket save(Ticket ticket);
 
 //    Map<String, Ticket> getAllTickets();
 
