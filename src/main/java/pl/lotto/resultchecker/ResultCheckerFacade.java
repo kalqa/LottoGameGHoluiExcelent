@@ -33,7 +33,7 @@ public class ResultCheckerFacade {
         List<Integer> winnerNumbers = winnerDataLoader.getWinnerNumbers(dateToGetWinnersTicket);
         List<TicketDto> tickets = winnerDataLoader.getTickets(dateToGetWinnersTicket);
         List<TicketDto> ticketDtos = winnerTicketCheckable.checkWhichTicketWon(tickets, winnerNumbers);
-        winnersTicketDataBase.addWinnerTicketsToDataBase(ticketDtos);
+        winnersTicketDataBase.save(ticketDtos);
         return ticketDtos;
     }
 

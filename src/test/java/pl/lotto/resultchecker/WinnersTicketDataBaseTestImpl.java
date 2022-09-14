@@ -13,8 +13,9 @@ class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
     }
 
     @Override
-    public void addWinnerTicketsToDataBase(List<TicketDto> ticketDto) {
-        winnerTickets.addAll(ticketDto);
+    public List<TicketDto> save(List<TicketDto> ticketDtos) {
+        winnerTickets.addAll(ticketDtos);
+        return ticketDtos;
     }
 
     @Override
@@ -23,4 +24,7 @@ class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
                 .map(TicketDto::hash)
                 .anyMatch(hash -> hash.equals(id));
     }
+
+
+
 }

@@ -1,9 +1,16 @@
 package pl.lotto.resultannouncer;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.WinnersTicketDataBase;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
 
@@ -14,15 +21,12 @@ class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
     }
 
     @Override
-    public void addWinnerTicketsToDataBase(List<TicketDto> ticketDto) {
-        winnerTickets.addAll(ticketDto);
+    public List<TicketDto> save(List<TicketDto> ticketDtos) {
+        winnerTickets.addAll(ticketDtos);
+        return ticketDtos;
     }
 
-    @Override
-    public boolean checkIfUserWon(String id) {
-        return winnerTickets.stream()
-                .map(TicketDto::hash)
-                .anyMatch(hash -> hash.equals(id));
-    }
+
+
+
 }
-

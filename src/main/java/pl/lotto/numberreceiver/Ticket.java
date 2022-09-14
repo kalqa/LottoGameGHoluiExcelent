@@ -2,6 +2,7 @@ package pl.lotto.numberreceiver;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,10 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "tickets")
 public
 class Ticket {
-
     @Id
     String id;
-
     String hash;
     List<Integer> userNumbers;
     LocalDateTime nextDrawDate;

@@ -13,8 +13,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.lotto.BaseSpecIntegration;
 import pl.lotto.infrastructure.numberreceiver.controller.NumberReceiverRequestDto;
+import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.numbergenerator.dto.NumberGeneratorResultDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +35,9 @@ public class WinningLottoIntegrationSpec extends BaseSpecIntegration {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    NumberGeneratorFacade numberGeneratorFacade;
 
 //    # HAPPY PATH 1
 //
@@ -60,7 +66,17 @@ public class WinningLottoIntegrationSpec extends BaseSpecIntegration {
         assertThat(numberReceiverResultDto.message()).isEqualTo(List.of("correct message"));
         assertThat(numberReceiverResultDto.ticket().userNumbers()).isEqualTo(List.of(1, 2, 3, 4, 5, 6));
 
+
         String userHashCode = numberReceiverResultDto.ticket().hash();
+        LocalDateTime dateAndTimeNextDraw = numberReceiverResultDto.ticket().dateAndTimeNextDraw();
+
+        NumberGeneratorResultDto numberGeneratorResultDto =
+                numberGeneratorFacade.winningNumbersForDate(dateAndTimeNextDraw);
+
+
+
+
+
 
 
     }
