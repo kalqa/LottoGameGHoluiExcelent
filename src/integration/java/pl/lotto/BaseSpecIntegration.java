@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BaseSpecIntegration {
 
     @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
@@ -26,7 +26,7 @@ public class BaseSpecIntegration {
     }
 
     @Autowired
-    public TestRestTemplate restTemplate;
+    public TestRestTemplate testRestTemplate;
 
     static {
         mongoDBContainer.start();

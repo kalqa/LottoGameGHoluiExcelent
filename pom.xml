@@ -21,7 +21,7 @@
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <assertj-core.version>3.23.1</assertj-core.version>
         <java.version>17</java.version>
-        <mongock-bom.version>4.3.8</mongock-bom.version>
+        <mongock-bom.version>4.3.7</mongock-bom.version>
         <test.containers.mongodb.version>1.15.2</test.containers.mongodb.version>
         <testcontainers.version>1.17.3</testcontainers.version>
     </properties>
