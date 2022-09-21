@@ -20,14 +20,14 @@ class NumberGeneratorFacadeSpec {
                 new ConcurrentHashMap<>());
 
         NumberGeneratorConfiguration numberGeneratorConfiguration = new NumberGeneratorConfiguration();
-        NumberGeneratorFacade numberReceiverFacade = numberGeneratorConfiguration
+        NumberGeneratorFacade numberGeneratorFacade = numberGeneratorConfiguration
                 .numberGeneratorFacadeTest(winningNumberGenerable, winningNumberRepository);
 
         LocalDateTime dateToSave = LocalDateTime.of(1, 1, 1, 1, 1);
-        numberReceiverFacade.generateNumbersForDate(dateToSave);
+        numberGeneratorFacade.generateNumbersForDate(dateToSave);
 
         // when
-        NumberGeneratorResultDto winningNumbers = numberReceiverFacade.winningNumbersForDate(dateToSave);
+        NumberGeneratorResultDto winningNumbers = numberGeneratorFacade.generateNumbersForDate(dateToSave);
 
         // then
         List<Integer> expectedWinningNumbers = Arrays.asList(1, 2, 3, 4, 5, 6);
