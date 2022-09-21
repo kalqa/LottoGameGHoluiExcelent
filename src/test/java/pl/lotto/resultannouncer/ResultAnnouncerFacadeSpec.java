@@ -6,6 +6,7 @@ import pl.lotto.resultannoucer.ResultAnnouncerConfiguration;
 import pl.lotto.resultannoucer.ResultAnnouncerFacade;
 import pl.lotto.resultannoucer.dto.ResultAnnouncerMessageDto;
 import pl.lotto.resultchecker.ResultCheckerFacade;
+import pl.lotto.resultchecker.WinnerTickets;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,17 +24,17 @@ class ResultAnnouncerFacadeSpec {
 
         //given
 
-        List<TicketDto> ticketDtos = new ArrayList<>(Arrays.asList(
-                new TicketDto("hash1", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
-                new TicketDto("hash2", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
-                new TicketDto("hash3", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1))
+        List<WinnerTickets> ticketDtos = new ArrayList<>(Arrays.asList(
+                new WinnerTickets("hash1", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
+                new WinnerTickets("hash2", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
+                new WinnerTickets("hash3", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1))
         ));
         ResultCheckerFacade resultCheckerFacade = mock(ResultCheckerFacade.class);
         WinnersTicketDataBaseTestImpl winnersTicketDataBaseTest = new WinnersTicketDataBaseTestImpl(ticketDtos);
         given(resultCheckerFacade.getWinnersTicketDataBase()).willReturn(winnersTicketDataBaseTest);
 
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
-                .buildModuleForTest(resultCheckerFacade);
+                .resultAnnouncerFacadeTest(resultCheckerFacade);
 
 
         //when
@@ -50,17 +51,17 @@ class ResultAnnouncerFacadeSpec {
     @Test
     void shouldReturnThatUserNotWon() {
         //given
-        List<TicketDto> ticketDtos = new ArrayList<>(Arrays.asList(
-                new TicketDto("hash1", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
-                new TicketDto("hash2", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
-                new TicketDto("hash3", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1))
+        List<WinnerTickets> ticketDtos = new ArrayList<>(Arrays.asList(
+                new WinnerTickets("hash1", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
+                new WinnerTickets("hash2", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1)),
+                new WinnerTickets("hash3", List.of(1, 2, 3, 4, 5, 6), LocalDateTime.of(1, 1, 1, 1, 1))
         ));
         ResultCheckerFacade resultCheckerFacade = mock(ResultCheckerFacade.class);
         WinnersTicketDataBaseTestImpl winnersTicketDataBaseTest = new WinnersTicketDataBaseTestImpl(ticketDtos);
         given(resultCheckerFacade.getWinnersTicketDataBase()).willReturn(winnersTicketDataBaseTest);
 
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
-                .buildModuleForTest(resultCheckerFacade);
+                .resultAnnouncerFacadeTest(resultCheckerFacade);
 
 
         //when

@@ -1,31 +1,30 @@
 package pl.lotto.infrastructure.resultannouncer.controller;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.lotto.infrastructure.numberreceiver.controller.NumberReceiverRequestDto;
+import pl.lotto.infrastructure.resultannouncer.controller.exception.TicketNotFoundException;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.resultannoucer.ResultAnnouncerFacade;
+import pl.lotto.resultannoucer.dto.ResultAnnouncerMessageDto;
 
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/winners")
+@RestController
+@AllArgsConstructor
 public class ResultAnnouncerController {
 
     ResultAnnouncerFacade announcerFacade;
 
-//    @GetMapping("/inputNumbers")
-//    public ResponseEntity<NumberReceiverResultDto> inputNumbers() {
-//        NumberReceiverResultDto numberReceiverResultDto = announcerFacade.winner(request.getClientNumbers());
-//        if (!numberReceiverResultDto.message().contains("correct message")) {
-//            return new ResponseEntity<>(numberReceiverResultDto, HttpStatus.CONFLICT);
-//        }
-//        return new ResponseEntity<>(numberReceiverResultDto, HttpStatus.OK);
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity getTaskById(@RequestParam("id") String id) {
-        return ResponseEntity.ok(announcerFacade.winner(id));
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ResultAnnouncerMessageDto> winners(@PathVariable String id) {
+        ResultAnnouncerMessageDto winner = announcerFacade.winner(id);
+        if (winner.userWonInformation()) {
+            return ResponseEntity.ok(announcerFacade.winner(id));
+        }
+        throw new TicketNotFoundException(id);
     }
-
 }

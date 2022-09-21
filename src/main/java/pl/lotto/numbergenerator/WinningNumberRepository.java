@@ -13,8 +13,11 @@ public interface WinningNumberRepository extends MongoRepository<WinnerNumbers, 
 
     WinnerNumbers save(WinnerNumbers winnerNumbers);
 
+
+
+    WinnerNumbers findByDateOfWinnerNumbers(LocalDateTime dateToGet);
+//    List<Integer> findByDateOfWinnerNumbers(LocalDateTime dateToGet);
+
+
     List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet);
-
-
-
 }

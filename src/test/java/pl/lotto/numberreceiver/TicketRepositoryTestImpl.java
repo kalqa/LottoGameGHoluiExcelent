@@ -34,7 +34,7 @@ class TicketRepositoryTestImpl implements TicketRepository {
 //    }
 
     @Override
-    public List<Ticket> findAllByNextDrawDate(LocalDateTime nextDrawDate) {
+    public List<Ticket> findTicketsByNextDrawDate(LocalDateTime nextDrawDate) {
         return tickets.entrySet()
                 .stream()
                 .filter(currentElement -> currentElement.getValue().nextDrawDate.equals(nextDrawDate))

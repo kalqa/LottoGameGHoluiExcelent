@@ -14,11 +14,14 @@ class TicketStorage {
     public Ticket generateTicket(List<Integer> numbersFromUser) {
         Ticket uniqueUserTicket = ticketGenerator.generateUserTicket(numbersFromUser);
         ticketRepository.save(uniqueUserTicket);
+//        Optional<Ticket> ticketByHash = ticketRepository.findTicketByHash(uniqueUserTicket.hash);
+//        System.out.println(ticketByHash);
         return uniqueUserTicket;
     }
 
     public List<Ticket> getTicketsFromDate(LocalDateTime dateToGet) {
-        return ticketRepository.findAllByNextDrawDate(dateToGet);
+        List<Ticket> allByNextDrawDate = ticketRepository.findTicketsByNextDrawDate(dateToGet);
+        return allByNextDrawDate;
     }
 
 }

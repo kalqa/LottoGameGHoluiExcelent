@@ -21,7 +21,7 @@ class NumberGeneratorFacadeSpec {
 
         NumberGeneratorConfiguration numberGeneratorConfiguration = new NumberGeneratorConfiguration();
         NumberGeneratorFacade numberReceiverFacade = numberGeneratorConfiguration
-                .buildModuleForTests(winningNumberGenerable, winningNumberRepository);
+                .numberGeneratorFacadeTest(winningNumberGenerable, winningNumberRepository);
 
         LocalDateTime dateToSave = LocalDateTime.of(1, 1, 1, 1, 1);
         numberReceiverFacade.generateNumbersForDate(dateToSave);

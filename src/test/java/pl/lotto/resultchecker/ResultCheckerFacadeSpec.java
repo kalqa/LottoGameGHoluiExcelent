@@ -45,7 +45,7 @@ class ResultCheckerFacadeSpec {
 
         ResultCheckerConfiguration resultCheckerConfiguration = new ResultCheckerConfiguration();
         ResultCheckerFacade resultCheckerFacade = resultCheckerConfiguration
-                .buildModuleForTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
+                .resultCheckerFacadeTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
 
 
         //when
@@ -92,7 +92,7 @@ class ResultCheckerFacadeSpec {
 
         ResultCheckerConfiguration resultCheckerConfiguration = new ResultCheckerConfiguration();
         ResultCheckerFacade resultCheckerFacade = resultCheckerConfiguration
-                .buildModuleForTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
+                .resultCheckerFacadeTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
 
         //when
         ResultCheckerDto actualWinnerResultCheckerDto =
@@ -134,7 +134,7 @@ class ResultCheckerFacadeSpec {
 
         ResultCheckerConfiguration resultCheckerConfiguration = new ResultCheckerConfiguration();
         ResultCheckerFacade resultCheckerFacade = resultCheckerConfiguration
-                .buildModuleForTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
+                .resultCheckerFacadeTest(winnerTicketCheckable, winnerDataLoader, winnersTicketDataBase);
 
         //when
         ResultCheckerDto actualWinnerResultCheckerDto =

@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 @AllArgsConstructor
+//@Component
 public class NumberReceiverFacade {
 
     NumberValidator numberValidator;
@@ -27,6 +29,8 @@ public class NumberReceiverFacade {
 
     public List<TicketDto> userNumbersForGivenDate(LocalDateTime date) {
         // returns all numbers for given date
-        return ListTicketDtoMapper.mapListOfTicketToTicketDto(ticketStorage.getTicketsFromDate(date));
+        List<Ticket> ticketsFromDate = ticketStorage.getTicketsFromDate(date);
+        List<TicketDto> ticketDtos = ListTicketDtoMapper.mapListOfTicketToTicketDto(ticketsFromDate);
+        return ticketDtos;
     }
 }

@@ -22,9 +22,16 @@ public class WinningNumberRepositoryImpl implements WinningNumberRepository {
     }
 
     @Override
+    public WinnerNumbers findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+        return null;
+    }
+
+
+    @Override
     public List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet) {
         return null;
     }
+
 
     @Override
     public <S extends WinnerNumbers> List<S> saveAll(Iterable<S> entities) {

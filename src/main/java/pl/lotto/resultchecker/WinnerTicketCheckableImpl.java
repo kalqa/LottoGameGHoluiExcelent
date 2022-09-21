@@ -1,11 +1,13 @@
 package pl.lotto.resultchecker;
 
+import org.springframework.stereotype.Component;
 import pl.lotto.numberreceiver.dto.TicketDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 class WinnerTicketCheckableImpl implements WinnerTicketCheckable {
     @Override
     public List<TicketDto> checkWhichTicketWon(List<TicketDto> tickets, List<Integer> winnerNumbers) {

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -16,7 +17,7 @@ class WinningNumberImpl implements WinningNumberGenerable {
 
     private final int MAX = 99;
     private final int MIN = 1;
-    Random random;
+    Random random = new Random();
 
 
     public List<Integer> generateWinningNumbers() {

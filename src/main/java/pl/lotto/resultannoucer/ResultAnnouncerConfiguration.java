@@ -1,13 +1,17 @@
 package pl.lotto.resultannoucer;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 
+@Configuration
 public class ResultAnnouncerConfiguration {
-    public ResultAnnouncerFacade buildModuleForClient(ResultCheckerFacade resultCheckerFacade) {
+    @Bean
+    public ResultAnnouncerFacade resultAnnouncerFacade(ResultCheckerFacade resultCheckerFacade) {
         return new ResultAnnouncerFacade(resultCheckerFacade);
     }
 
-    public ResultAnnouncerFacade buildModuleForTest(ResultCheckerFacade resultCheckerFacade) {
-        return buildModuleForClient(resultCheckerFacade);
+    public ResultAnnouncerFacade resultAnnouncerFacadeTest(ResultCheckerFacade resultCheckerFacade) {
+        return resultAnnouncerFacade(resultCheckerFacade);
     }
 }

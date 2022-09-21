@@ -1,12 +1,19 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.numberreceiver.dto.TicketDto;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface WinnersTicketDataBase {
+@Repository
+public interface WinnersTicketDataBase extends MongoRepository<WinnerTickets, Long> {
 
-    void addWinnerTicketsToDataBase(List<TicketDto> ticketDto);
+//    void addWinnerTicketsToDataBase(List<WinnerTickets> ticketDto);
 
-    boolean checkIfUserWon(String id);
+    List<WinnerTickets> save(List<WinnerTickets> ticketDto);
+
+    Optional<WinnerTickets> findByHash(String id);
+
+
 }

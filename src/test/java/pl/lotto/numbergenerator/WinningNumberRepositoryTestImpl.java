@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +26,20 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
     }
 
     @Override
-    public List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet) {
-        return winningNumbers.get(dateToGet);
+    public WinnerNumbers findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+        return null;
     }
+
+//    @Override
+//    public List<Integer> findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+//        return winningNumbers.get(dateToGet);
+//    }
+
+    @Override
+    public List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+        return null;
+    }
+
 
     @Override
     public <S extends WinnerNumbers> List<S> saveAll(Iterable<S> entities) {

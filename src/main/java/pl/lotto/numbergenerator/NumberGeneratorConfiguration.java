@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 public class NumberGeneratorConfiguration {
 
     @Bean
-    NumberGeneratorFacade buildModuleForClient(WinningNumberGenerable winningNumberGenerable,
-                                               WinningNumberRepository winningNumberRepository) {
+    NumberGeneratorFacade numberGeneratorFacade(WinningNumberGenerable winningNumberGenerable,
+                                                WinningNumberRepository winningNumberRepository) {
         return new NumberGeneratorFacade(winningNumberGenerable, winningNumberRepository);
     }
 
-    NumberGeneratorFacade buildModuleForTests(WinningNumberGenerable winningNumberGenerable,
-                                              WinningNumberRepository winningNumberRepository) {
-        return buildModuleForClient(winningNumberGenerable, winningNumberRepository);
+    NumberGeneratorFacade numberGeneratorFacadeTest(WinningNumberGenerable winningNumberGenerable,
+                                                    WinningNumberRepository winningNumberRepository) {
+        return numberGeneratorFacade(winningNumberGenerable, winningNumberRepository);
     }
 }
