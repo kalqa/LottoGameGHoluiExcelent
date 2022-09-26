@@ -86,7 +86,7 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
                 .atMost(3, TimeUnit.SECONDS)
                 .until(() -> resultCheckerFacade.winners(currentDate) != null);
 
-        MvcResult mvcResultOfGetWinners = getWinners(mockMvc, userHashCode);
+        MvcResult mvcResultOfGetWinners = getWinners(mockMvc, userHashCode, currentDate);
 
         ResultAnnouncerMessageDto resultAnnouncerDto =
                 objectMapper.readValue(mvcResultOfGetWinners.getResponse().getContentAsString(), ResultAnnouncerMessageDto.class);
@@ -99,7 +99,7 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
     public void shouldReturnTicketNotFound() throws Exception {
         String ticketHash = "hash";
         MvcResult mvcResultOfGetTicket = mockMvc.perform
-                        (MockMvcRequestBuilders.get("/winners/" + ticketHash)
+                        (MockMvcRequestBuilders.get("/winners/" + ticketHash + "/" + LocalDateTime.MAX)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         assertThat(mvcResultOfGetTicket.getResponse().getStatus()).isEqualTo(404);

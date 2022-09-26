@@ -11,5 +11,5 @@ import java.util.List;
 public class WinnerTickets {
     String hash;
     List<Integer> userNumbers;
-    LocalDateTime dateAndTimeNextDraw;
+    LocalDateTime dateTimeNextDraw;
 }

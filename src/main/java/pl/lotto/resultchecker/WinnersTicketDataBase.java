@@ -3,6 +3,7 @@ package pl.lotto.resultchecker;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,6 @@ public interface WinnersTicketDataBase extends MongoRepository<WinnerTickets, Lo
 
     List<WinnerTickets> save(List<WinnerTickets> ticketDto);
 
-    Optional<WinnerTickets> findByHashAndByDate(String id);
-
+    Optional<WinnerTickets> findByHashAndDateTimeNextDraw(String id, LocalDateTime dateToGetWinnersTicket);
 
 }

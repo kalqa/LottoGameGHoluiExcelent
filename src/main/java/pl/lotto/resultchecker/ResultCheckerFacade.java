@@ -1,7 +1,6 @@
 package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.resultchecker.dto.ResultCheckerDto;
 import pl.lotto.infrastructure.resultannouncer.controller.exception.TicketNotFoundException;
@@ -31,14 +30,18 @@ public class ResultCheckerFacade {
     }
 
     public boolean winner(String userId, LocalDateTime dateToGetWinnersTicket) {
-        List<TicketDto> tickets = winnerDataLoader.getTickets(dateToGetWinnersTicket);
-        boolean isUserInDataBase = findTicketForGivenDateByUserId(tickets, userId);
-        if (isUserInDataBase) {
+        if (!isUserPresent(userId, dateToGetWinnersTicket)) {
             throw new TicketNotFoundException(userId);
         }
         WinnersTicketDataBase winnersTicketDataBase = getWinnersTicketDataBase();
-        Optional<WinnerTickets> byHash = winnersTicketDataBase.findByHashAndByDate(userId);
+        Optional<WinnerTickets> byHash = winnersTicketDataBase.findByHashAndDateTimeNextDraw(userId, dateToGetWinnersTicket);
         return byHash.isPresent();
+    }
+
+    private boolean isUserPresent(String userId, LocalDateTime dateToGetWinnersTicket) {
+        List<TicketDto> tickets = winnerDataLoader.getTickets(dateToGetWinnersTicket);
+        boolean isUserInDataBase = findTicketForGivenDateByUserId(tickets, userId);
+        return isUserInDataBase;
     }
 
     private boolean findTicketForGivenDateByUserId(List<TicketDto> tickets, String userId) {

@@ -29,7 +29,7 @@ class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
     }
 
     @Override
-    public Optional<WinnerTickets> findByHashAndByDate(String id) {
+    public Optional<WinnerTickets> findByHashAndDateTimeNextDraw(String id, LocalDateTime dateToGetWinnersTicket) {
         var sth = winnerTickets.stream()
                 .filter(winnerTicket -> winnerTicket.getHash().equals(id))
                 .collect(Collectors.toCollection(ArrayList::new));

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.FluentQuery;
 import pl.lotto.resultchecker.WinnerTickets;
 import pl.lotto.resultchecker.WinnersTicketDataBase;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -27,13 +28,9 @@ class WinnersTicketDataBaseTestImpl implements WinnersTicketDataBase {
     }
 
     @Override
-    public Optional<WinnerTickets> findByHashAndByDate(String id) {
-        return winnerTickets.stream()
-                .filter(winnerTicket -> winnerTicket.getHash().equals(id))
-                .findFirst();
-//        return Optional.of(new WinnerTickets("has2", List.of(12), LocalDateTime.MAX));
+    public Optional<WinnerTickets> findByHashAndDateTimeNextDraw(String id, LocalDateTime dateToGetWinnersTicket) {
+        return Optional.empty();
     }
-
 
     @Override
     public <S extends WinnerTickets> S save(S entity) {
