@@ -13,7 +13,7 @@ public interface WinnersTicketDataBase extends MongoRepository<WinnerTickets, Lo
 
     List<WinnerTickets> save(List<WinnerTickets> ticketDto);
 
-    Optional<WinnerTickets> findByHash(String id);
+    Optional<WinnerTickets> findByHashAndByDate(String id);
 
 
 }

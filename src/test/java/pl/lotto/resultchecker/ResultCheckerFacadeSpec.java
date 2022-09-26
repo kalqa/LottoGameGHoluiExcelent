@@ -99,9 +99,8 @@ class ResultCheckerFacadeSpec {
                 resultCheckerFacade.winners(LocalDateTime.of(1, 1, 1, 1, 1));
 
         //then
-        List<TicketDto> expectedList = Arrays.asList
-                (new TicketDto("hash2", Arrays.asList(2, 3, 4, 5, 6, 9), dayOfResult)
-                );
+        List<TicketDto> expectedList = List.of(new TicketDto("hash2", Arrays.asList(2, 3, 4, 5, 6, 9), dayOfResult)
+        );
         ResultCheckerDto resultCheckerDto = new ResultCheckerDto(expectedList);
 
         assertThat(actualWinnerResultCheckerDto).isEqualTo(resultCheckerDto);

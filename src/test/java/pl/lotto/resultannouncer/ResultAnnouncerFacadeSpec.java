@@ -39,8 +39,8 @@ class ResultAnnouncerFacadeSpec {
 
         //when
         String hash1 = "hash1";
-        given(resultCheckerFacade.winner(hash1)).willCallRealMethod();
-        ResultAnnouncerMessageDto actualResultAnnouncerMessageDto = resultAnnouncerFacade.winner(hash1);
+        given(resultCheckerFacade.winner(hash1, LocalDateTime.of(1, 1, 1, 1, 1))).willCallRealMethod();
+        ResultAnnouncerMessageDto actualResultAnnouncerMessageDto = resultAnnouncerFacade.winner(hash1, LocalDateTime.of(1, 1, 1, 1, 1));
 
         // then
         boolean expected = true;
@@ -66,8 +66,8 @@ class ResultAnnouncerFacadeSpec {
 
         //when
         String hash1 = "hash4";
-        given(resultCheckerFacade.winner(hash1)).willCallRealMethod();
-        ResultAnnouncerMessageDto actualResultAnnouncerMessageDto = resultAnnouncerFacade.winner(hash1);
+        given(resultCheckerFacade.winner(hash1, LocalDateTime.of(1, 1, 1, 1, 1))).willCallRealMethod();
+        ResultAnnouncerMessageDto actualResultAnnouncerMessageDto = resultAnnouncerFacade.winner(hash1, LocalDateTime.of(1, 1, 1, 1, 1));
 
         // then
         boolean expected = false;

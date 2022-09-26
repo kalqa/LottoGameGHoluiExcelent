@@ -25,7 +25,6 @@ public class NumberGeneratorFacade {
         WinnerNumbers winnerNumbers = new WinnerNumbers(generated, currentDate);
         repository.save(winnerNumbers);
         return new NumberGeneratorResultDto(generated);
-
     }
 
     public NumberGeneratorResultDto winningNumbersForDate(LocalDateTime date) {

@@ -12,7 +12,7 @@ public class InputNumbersExceptionAdvice {
 
     @ResponseBody
     @ExceptionHandler(InputNumbersException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String InputNumbersErrorHandler(InputNumbersException InputNumbersException) {
         return InputNumbersException.getMessage();
     }

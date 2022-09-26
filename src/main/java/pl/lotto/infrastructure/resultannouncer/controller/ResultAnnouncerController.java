@@ -12,6 +12,8 @@ import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.resultannoucer.ResultAnnouncerFacade;
 import pl.lotto.resultannoucer.dto.ResultAnnouncerMessageDto;
 
+import java.time.LocalDateTime;
+
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/winners")
 @RestController
 @AllArgsConstructor
@@ -19,11 +21,12 @@ public class ResultAnnouncerController {
 
     ResultAnnouncerFacade announcerFacade;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ResultAnnouncerMessageDto> winners(@PathVariable String id) {
-        ResultAnnouncerMessageDto winner = announcerFacade.winner(id);
+    @GetMapping(value = {"/{id}", "/{dateToGet}"})
+    public ResponseEntity<ResultAnnouncerMessageDto> winners(@PathVariable String id,
+                                                             @PathVariable LocalDateTime dateToGet) {
+        ResultAnnouncerMessageDto winner = announcerFacade.winner(id, dateToGet);
         if (winner.userWonInformation()) {
-            return ResponseEntity.ok(announcerFacade.winner(id));
+            return ResponseEntity.ok(winner);
         }
         throw new TicketNotFoundException(id);
     }
