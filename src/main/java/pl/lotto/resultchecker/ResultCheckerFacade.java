@@ -30,18 +30,19 @@ public class ResultCheckerFacade {
     }
 
     public boolean winner(String userId, LocalDateTime dateToGetWinnersTicket) {
-        if (!isUserPresent(userId, dateToGetWinnersTicket)) {
-            throw new TicketNotFoundException(userId);
-        }
+        isUserPresent(userId, dateToGetWinnersTicket);
         WinnersTicketDataBase winnersTicketDataBase = getWinnersTicketDataBase();
         Optional<WinnerTickets> byHash = winnersTicketDataBase.findByHashAndDateTimeNextDraw(userId, dateToGetWinnersTicket);
         return byHash.isPresent();
     }
 
-    private boolean isUserPresent(String userId, LocalDateTime dateToGetWinnersTicket) {
+    public boolean isUserPresent(String userId, LocalDateTime dateToGetWinnersTicket) {
         List<TicketDto> tickets = winnerDataLoader.getTickets(dateToGetWinnersTicket);
         boolean isUserInDataBase = findTicketForGivenDateByUserId(tickets, userId);
-        return isUserInDataBase;
+        if (!isUserInDataBase) {
+            throw new TicketNotFoundException(userId);
+        }
+        return true;
     }
 
     private boolean findTicketForGivenDateByUserId(List<TicketDto> tickets, String userId) {

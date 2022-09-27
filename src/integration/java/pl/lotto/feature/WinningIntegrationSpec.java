@@ -2,6 +2,7 @@ package pl.lotto.feature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.awaitility.Awaitility;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.lotto.infrastructure.numbergenerator.db.scheduler.GeneratorNumbers;
 import pl.lotto.infrastructure.numbergenerator.db.scheduler.NumberGeneratorScheduler;
 import pl.lotto.infrastructure.numberreceiver.controller.NumberReceiverRequestDto;
+import pl.lotto.infrastructure.resultannouncer.controller.exception.TicketNotFoundException;
 import pl.lotto.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.resultannoucer.ResultAnnouncerFacade;
@@ -23,14 +25,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 //@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class WinningIntegrationSpec extends BaseSpecIntegration implements defaultMethods {
-
-
     @Autowired
     ObjectMapper objectMapper;
 
@@ -79,11 +77,11 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
         LocalDateTime currentDate = numberReceiverResultDto.ticket().dateAndTimeNextDraw();
 
         Awaitility.await()
-                .atMost(3, TimeUnit.SECONDS)
+                .atMost(10000, TimeUnit.SECONDS)
                 .until(() -> generatorNumbers.generateNumbers());
 
         Awaitility.await()
-                .atMost(3, TimeUnit.SECONDS)
+                .atMost(10000, TimeUnit.SECONDS)
                 .until(() -> resultCheckerFacade.winners(currentDate) != null);
 
         MvcResult mvcResultOfGetWinners = getWinners(mockMvc, userHashCode, currentDate);
@@ -96,15 +94,11 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
     }
 
     @Test
-    public void shouldReturnTicketNotFound() throws Exception {
+    public void shouldReturnTicketNotFoundException() {
         String ticketHash = "hash";
-        MvcResult mvcResultOfGetTicket = mockMvc.perform
-                        (MockMvcRequestBuilders.get("/winners/" + ticketHash + "/" + LocalDateTime.MAX)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-        assertThat(mvcResultOfGetTicket.getResponse().getStatus()).isEqualTo(404);
-        assertThat(mvcResultOfGetTicket.getResponse().getContentAsString())
-                .isEqualTo("Could not find Ticket: hash");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Assertions.assertThrows(TicketNotFoundException.class,
+                () -> resultCheckerFacade.isUserPresent(ticketHash, currentDateTime));
     }
 
     @Test
@@ -121,5 +115,40 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
         assertThat(mvcResultOfGetTicket.getResponse().getContentAsString())
                 .isEqualTo("you must give exactly six numbers ," +
                         " you must give exactly six not repeatable numbers");
+    }
+
+    @Test
+    public void shouldReturnThatTicketIsInBaseButUserDidntWin() throws Exception {
+        // given
+        NumberReceiverRequestDto userNumbers = NumberReceiverRequestDto.builder()
+                .clientNumbers(List.of(1, 2, 45, 46, 50, 60))
+                .build();
+        MvcResult mvcResultOfPostInputNumbers = postInputNumbers(mockMvc, userNumbers);
+
+        NumberReceiverResultDto numberReceiverResultDto =
+                objectMapper.readValue(mvcResultOfPostInputNumbers.getResponse().getContentAsString(), NumberReceiverResultDto.class);
+
+        assertThat(mvcResultOfPostInputNumbers.getResponse().getStatus()).isEqualTo(200);
+        assertThat(numberReceiverResultDto.message()).isEqualTo(List.of("correct message"));
+        assertThat(numberReceiverResultDto.ticket().userNumbers()).isEqualTo(List.of(1, 2, 45, 46, 50, 60));
+
+        String userHashCode = numberReceiverResultDto.ticket().hash();
+        LocalDateTime currentDate = numberReceiverResultDto.ticket().dateAndTimeNextDraw();
+
+        Awaitility.await()
+                .atMost(3, TimeUnit.SECONDS)
+                .until(() -> generatorNumbers.generateNumbers());
+
+        Awaitility.await()
+                .atMost(3, TimeUnit.SECONDS)
+                .until(() -> resultCheckerFacade.winners(currentDate) != null);
+
+        MvcResult mvcResultOfGetWinners = getWinners(mockMvc, userHashCode, currentDate);
+
+        ResultAnnouncerMessageDto resultAnnouncerDto =
+                objectMapper.readValue(mvcResultOfGetWinners.getResponse().getContentAsString(), ResultAnnouncerMessageDto.class);
+
+        assertThat(mvcResultOfGetWinners.getResponse().getStatus()).isEqualTo(200);
+        assertThat(resultAnnouncerDto.userWonInformation()).isEqualTo(false);
     }
 }

@@ -28,7 +28,7 @@ public class NumberGeneratorFacade {
     }
 
     public NumberGeneratorResultDto winningNumbersForDate(LocalDateTime date) {
-        List<Integer> winningNumbers = repository.findByDateOfWinnerNumbers(date).numbers;
+        List<Integer> winningNumbers = repository.findByDateOfWinnerNumbers(date).get(0).numbers;
         return new NumberGeneratorResultDto(winningNumbers);
     }
 }

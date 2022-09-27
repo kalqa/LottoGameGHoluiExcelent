@@ -10,24 +10,22 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
-
 @Component
 class TicketGenerator implements TicketGenerable {
 
-    private static LocalDate calcNextSunday(LocalDate currentDay) {
+    private static LocalDate calcNextSaturday(LocalDate currentDay) {
         return currentDay.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
     }
 
     @Override
     public Ticket generateUserTicket(List<Integer> numbersFromUser) {
         String hash = UUID.randomUUID().toString();
-        LocalDateTime theNextSunday = LocalDateTime.of(calcNextSunday(LocalDate.now()),
+        LocalDateTime theNextSaturday = LocalDateTime.of(calcNextSaturday(LocalDate.now()),
                 LocalTime.of(12, 0));
         return Ticket.builder()
                 .userNumbers(numbersFromUser)
                 .hash(hash)
-                .nextDrawDate(theNextSunday)
+                .nextDrawDate(theNextSaturday)
                 .build();
     }
 }

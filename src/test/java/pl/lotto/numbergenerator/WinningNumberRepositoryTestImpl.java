@@ -26,7 +26,7 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
     }
 
     @Override
-    public WinnerNumbers findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+    public List<WinnerNumbers> findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
         return null;
     }
 

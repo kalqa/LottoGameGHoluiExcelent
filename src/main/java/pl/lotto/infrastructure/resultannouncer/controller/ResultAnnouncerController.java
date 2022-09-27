@@ -30,7 +30,7 @@ public class ResultAnnouncerController {
         if (winner.userWonInformation()) {
             return ResponseEntity.ok(winner);
         }
-        throw new TicketNotFoundException(id);
+       return ResponseEntity.ok(winner);
     }
 
 //    @GetMapping("/winners" + "{/id}" + "/{dateToGet}")

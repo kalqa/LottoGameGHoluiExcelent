@@ -15,7 +15,7 @@ public interface WinningNumberRepository extends MongoRepository<WinnerNumbers, 
 
 
 
-    WinnerNumbers findByDateOfWinnerNumbers(LocalDateTime dateToGet);
+    List<WinnerNumbers> findByDateOfWinnerNumbers(LocalDateTime dateToGet);
 //    List<Integer> findByDateOfWinnerNumbers(LocalDateTime dateToGet);
 
 
