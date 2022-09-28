@@ -2,6 +2,7 @@ package pl.lotto.feature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.awaitility.Awaitility;
+import com.jayway.awaitility.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,23 +67,27 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
                 .build();
         MvcResult mvcResultOfPostInputNumbers = postInputNumbers(mockMvc, userNumbers);
 
+        // when
         NumberReceiverResultDto numberReceiverResultDto =
                 objectMapper.readValue(mvcResultOfPostInputNumbers.getResponse().getContentAsString(), NumberReceiverResultDto.class);
 
+        // then
         assertThat(mvcResultOfPostInputNumbers.getResponse().getStatus()).isEqualTo(200);
         assertThat(numberReceiverResultDto.message()).isEqualTo(List.of("correct message"));
         assertThat(numberReceiverResultDto.ticket().userNumbers()).isEqualTo(List.of(1, 2, 3, 4, 5, 6));
 
+        // given
         String userHashCode = numberReceiverResultDto.ticket().hash();
         LocalDateTime currentDate = numberReceiverResultDto.ticket().dateAndTimeNextDraw();
 
         Awaitility.await()
-                .atMost(10000, TimeUnit.SECONDS)
-                .until(() -> generatorNumbers.generateNumbers());
-
-        Awaitility.await()
-                .atMost(10000, TimeUnit.SECONDS)
+                .atMost(5, TimeUnit.SECONDS)
+                .pollInterval(Duration.ONE_SECOND)
                 .until(() -> resultCheckerFacade.winners(currentDate) != null);
+
+//        Awaitility.await()
+//                .atMost(3000, TimeUnit.SECONDS)
+//                .until(() -> resultCheckerFacade.winners(currentDate) != null);
 
         MvcResult mvcResultOfGetWinners = getWinners(mockMvc, userHashCode, currentDate);
 
@@ -135,11 +140,12 @@ public class WinningIntegrationSpec extends BaseSpecIntegration implements defau
         String userHashCode = numberReceiverResultDto.ticket().hash();
         LocalDateTime currentDate = numberReceiverResultDto.ticket().dateAndTimeNextDraw();
 
-        Awaitility.await()
-                .atMost(3, TimeUnit.SECONDS)
-                .until(() -> generatorNumbers.generateNumbers());
+//        Awaitility.await()
+//                .atMost(3, TimeUnit.SECONDS)
+//                .until(() -> generatorNumbers.generateNumbers());
 
         Awaitility.await()
+                .pollDelay(Duration.ONE_SECOND)
                 .atMost(3, TimeUnit.SECONDS)
                 .until(() -> resultCheckerFacade.winners(currentDate) != null);
 

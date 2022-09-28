@@ -1,34 +1,31 @@
 package pl.lotto.numbergenerator;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
 class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
-    Map<LocalDateTime, List<Integer>> winningNumbers;
+    Map<UUID, List<Integer>> winningNumbers;
 
-    public WinningNumberRepositoryTestImpl(Map<LocalDateTime, List<Integer>> winningNumbers) {
+    public WinningNumberRepositoryTestImpl(Map<UUID, List<Integer>> winningNumbers) {
         this.winningNumbers = winningNumbers;
     }
 
     @Override
     public WinnerNumbers save(WinnerNumbers winnerNumbers) {
-        winningNumbers.put(winnerNumbers.getDateOfWinnerNumbers(), winnerNumbers.getNumbers());
-        return winnerNumbers;
+        WinnerNumbers winnerNumbers1 = new WinnerNumbers(winnerNumbers.getNumbers(), winnerNumbers.getDrawDate());
+        winningNumbers.put(winnerNumbers1.getId(), winnerNumbers1.getNumbers());
+        return winnerNumbers1;
     }
 
-    @Override
-    public List<WinnerNumbers> findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
-        return null;
-    }
 
 //    @Override
 //    public List<Integer> findByDateOfWinnerNumbers(LocalDateTime dateToGet) {
@@ -36,9 +33,24 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
 //    }
 
     @Override
-    public List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+    public WinnerNumbers findFirstByDrawDate(LocalDateTime drawDate) {
         return null;
     }
+
+    @Override
+    public List<Integer> getWinnerNumbersByDrawDate(LocalDateTime drawDate) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByDrawDate(LocalDateTime currentDate) {
+        return true;
+    }
+//
+//    @Override
+//    public List<Integer> getWinnerNumbersByDateOfWinnerNumbers(LocalDateTime dateToGet) {
+//        return null;
+//    }
 
 
     @Override
@@ -47,24 +59,49 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
     }
 
     @Override
-    public Optional<WinnerNumbers> findById(LocalDateTime dateTime) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(LocalDateTime dateTime) {
-        return false;
-    }
-
-    @Override
     public List<WinnerNumbers> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<WinnerNumbers> findAllById(Iterable<LocalDateTime> localDateTimes) {
+    public Iterable<WinnerNumbers> findAllById(Iterable<UUID> uuids) {
         return null;
     }
+
+    @Override
+    public Optional<WinnerNumbers> findById(UUID uuid) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsById(UUID uuid) {
+        return false;
+    }
+
+//    @Override
+//    public Optional<WinnerNumbers> findById(LocalDateTime dateTime) {
+//        return Optional.empty();
+//    }
+//
+//    @Override
+//    public boolean existsById(LocalDateTime dateTime) {
+//        return false;
+//    }
+//
+//    @Override
+//    public List<WinnerNumbers> findAll() {
+//        return null;
+//    }
+//
+//    @Override
+//    public Iterable<WinnerNumbers> findAllById(Iterable<UUID> uuids) {
+//        return null;
+//    }
+
+//    @Override
+//    public Iterable<WinnerNumbers> findAllById(Iterable<LocalDateTime> localDateTimes) {
+//        return null;
+//    }
 
     @Override
     public long count() {
@@ -72,9 +109,14 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
     }
 
     @Override
-    public void deleteById(LocalDateTime dateTime) {
+    public void deleteById(UUID uuid) {
 
     }
+
+//    @Override
+//    public void deleteById(LocalDateTime dateTime) {
+//
+//    }
 
     @Override
     public void delete(WinnerNumbers entity) {
@@ -82,9 +124,19 @@ class WinningNumberRepositoryTestImpl implements WinningNumberRepository {
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends LocalDateTime> localDateTimes) {
+    public void deleteAllById(Iterable<? extends UUID> uuids) {
 
     }
+
+//    @Override
+//    public void deleteAllById(Iterable<? extends UUID> uuids) {
+//
+//    }
+
+//    @Override
+//    public void deleteAllById(Iterable<? extends LocalDateTime> localDateTimes) {
+//
+//    }
 
     @Override
     public void deleteAll(Iterable<? extends WinnerNumbers> entities) {

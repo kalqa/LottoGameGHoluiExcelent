@@ -14,9 +14,9 @@ public class IntegrationConfiguration {
         return () -> List.of(1, 2, 3, 4, 5, 6);
     }
 
-    @Bean
-    GeneratorNumbers generatorNumbers() {
-        return new NumberGeneratorSchedulerTest();
-    }
+//    @Bean
+//    GeneratorNumbers generatorNumbers() {
+//        return new NumberGeneratorSchedulerTest();
+//    }
 
 }

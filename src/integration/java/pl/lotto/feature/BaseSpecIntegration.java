@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -20,7 +21,7 @@ import pl.lotto.feature.IntegrationConfiguration;
         classes = {Application.class, IntegrationConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-
+@ActiveProfiles("integration")
 @Testcontainers
 public class BaseSpecIntegration {
 
